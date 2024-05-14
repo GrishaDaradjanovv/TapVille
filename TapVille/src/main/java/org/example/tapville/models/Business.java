@@ -24,7 +24,7 @@ public class Business {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "Business",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creator",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Card> cards;
 
     public Business() {

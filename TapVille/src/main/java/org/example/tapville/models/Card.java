@@ -7,12 +7,15 @@ import jakarta.persistence.*;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "card_id")
     private int id;
 
     @Column(name = "card_name")
     private String cardName;
 
-    @OneToOne(mappedBy = "CardType", cascade = CascadeType.ALL)
+//    @OneToOne(mappedBy = "type", cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "type_id")
     private CardType cardType;
 
     @ManyToOne

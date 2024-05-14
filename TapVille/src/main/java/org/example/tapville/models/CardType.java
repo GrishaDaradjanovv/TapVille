@@ -8,6 +8,7 @@ public class CardType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "type_id")
     private int id;
 
     @Column(name = "type")
