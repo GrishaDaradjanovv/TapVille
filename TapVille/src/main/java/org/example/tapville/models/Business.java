@@ -10,7 +10,7 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "business_id")
-    private int id;
+    private long id;
 
     @Column(name = "busines_name")
     private String businessName;
@@ -30,7 +30,7 @@ public class Business {
     public Business() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
