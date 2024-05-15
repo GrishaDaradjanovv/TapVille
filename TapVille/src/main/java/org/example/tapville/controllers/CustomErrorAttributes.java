@@ -1,4 +1,4 @@
-package org.example.tapville.controllers.rest;
+package org.example.tapville.controllers;
 
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
