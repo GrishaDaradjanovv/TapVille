@@ -17,7 +17,7 @@ public interface BusinessService {
 
     List<Business> getAll();
 
-    List<Business> getByName(String name);
+    List<Business> getByName(Business business);
 
     List<Business> getAllActive();
 }

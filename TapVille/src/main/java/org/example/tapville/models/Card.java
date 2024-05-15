@@ -1,9 +1,12 @@
 package org.example.tapville.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cards")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("DTYPE")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +23,12 @@ public class Card {
 
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "customer_id")
+
     private Customer owner;
 
     @ManyToOne
     @JoinColumn(name = "creator", referencedColumnName = "business_id")
+    @JsonBackReference
     private Business creator;
 
     @Column(name = "is_deleted")

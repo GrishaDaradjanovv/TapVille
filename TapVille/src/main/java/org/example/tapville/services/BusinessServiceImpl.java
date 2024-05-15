@@ -21,9 +21,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Business getById(Long id) {
-        Optional<Business> businessOptional = businessRepository.findById(id);
-        if (businessOptional.isPresent()) {
-            return businessOptional.get();
+        Business businessOptional = businessRepository.getBusinessById(id);
+        if (businessOptional != null && !businessOptional.isDeleted()) {
+            return businessOptional;
         }
         throw new EntityNotFoundException("Business", "ID", String.valueOf(id));
     }
@@ -56,8 +56,8 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<Business> getByName(String name) {
-        return businessRepository.findByName(name);
+    public List<Business> getByName(Business business) {
+        return businessRepository.findByBusinessName(business.getBusinessName());
     }
 
     @Override
