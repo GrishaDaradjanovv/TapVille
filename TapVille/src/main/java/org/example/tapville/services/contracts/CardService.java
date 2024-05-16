@@ -7,15 +7,15 @@ import java.util.List;
 public interface CardService {
     Card getById(Long id);
 
-    Card create(Card card);
+    Card create(Card card, Business creator, Customer owner);
 
-    StampCard createStampCard(StampCard card);
+    StampCard createStampCard(StampCard card,Business creator, Customer owner);
 
-    DiscountCard createDiscountCard(DiscountCard card);
+    DiscountCard createDiscountCard(DiscountCard card,Business creator, Customer owner);
 
-    Card update(Card card);
+    Card update(Card card, Customer admin);
 
-    void deleteById(Long id);
+    void deleteById(Long id,Customer admin);
 
     List<Card> getAll();
 

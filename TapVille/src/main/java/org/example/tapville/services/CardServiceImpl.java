@@ -2,6 +2,7 @@ package org.example.tapville.services;
 
 
 import org.example.tapville.exceptions.EntityNotFoundException;
+import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.models.*;
 import org.example.tapville.repositories.contracts.CardRepository;
 import org.example.tapville.services.contracts.CardService;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class CardServiceImpl implements CardService {
+    private static final String CANNOT_PERFORM_OPERATION = "You can't perform this operation";
     private final CardRepository cardRepository;
 
     @Autowired
@@ -31,22 +33,41 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card create(Card card) {
+    public Card create(Card card,Business creator,Customer owner) {
+        if (creator == null && owner == null){
+            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
+        }
+        card.setCreator(creator);
+        card.setOwner(owner);
+        return cardRepository.save(card);
+    }
+
+
+    @Override
+    public StampCard createStampCard(StampCard card,Business creator, Customer owner) {
+        if (creator == null && owner == null){
+            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
+        }
+        card.setCreator(creator);
+        card.setOwner(owner);
         return cardRepository.save(card);
     }
 
     @Override
-    public StampCard createStampCard(StampCard card) {
+    public DiscountCard createDiscountCard(DiscountCard card,Business creator, Customer owner) {
+        if (creator == null && owner == null){
+            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
+        }
+        card.setCreator(creator);
+        card.setOwner(owner);
         return cardRepository.save(card);
     }
 
     @Override
-    public DiscountCard createDiscountCard(DiscountCard card) {
-        return cardRepository.save(card);
-    }
-
-    @Override
-    public Card update(Card card) {
+    public Card update(Card card,Customer admin) {
+        if (!admin.isAdmin()){
+            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
+        }
         Optional<Card> cardOptional = cardRepository.findById(card.getId());
         if (cardOptional.isPresent()) {
             return cardRepository.save(card);
@@ -55,7 +76,10 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id,Customer admin) {
+        if (!admin.isAdmin()){
+            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
+        }
         Card card = getById(id);
         card.setDeleted(true);
         cardRepository.save(card);
