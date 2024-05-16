@@ -11,7 +11,7 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
-    private int id;
+    private long id;
 
     @Column(name = "card_name")
     private String cardName;
@@ -37,7 +37,7 @@ public class Card {
     public Card() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

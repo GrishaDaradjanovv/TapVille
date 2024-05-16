@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class BusinessServiceImpl implements BusinessService {
 
-    private BusinessRepository businessRepository;
+    private final BusinessRepository businessRepository;
     @Autowired
     public BusinessServiceImpl(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
