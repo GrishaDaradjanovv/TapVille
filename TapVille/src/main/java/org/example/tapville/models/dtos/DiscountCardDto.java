@@ -1,9 +1,9 @@
 package org.example.tapville.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Table;
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-
 public class DiscountCardDto {
 
     private String cardName;

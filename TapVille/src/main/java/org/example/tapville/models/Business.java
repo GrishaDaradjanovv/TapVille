@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,20 +30,18 @@ public class Business {
     @Column(name = "is_deleted")
     @JsonIgnore
     private boolean isDeleted;
-
-    @OneToMany(mappedBy = "creator",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Card> cards;
+    private Set<DiscountCard> discountCards;
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<StampCard> stampCards;
 
     public Business() {
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getBusinessName() {
@@ -76,12 +75,32 @@ public class Business {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
-
-    public Set<Card> getCards() {
-        return cards;
+    public Set<DiscountCard> getDiscountCards() {
+        return discountCards;
     }
 
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
+    public void setDiscountCards(Set<DiscountCard> discountCards) {
+        this.discountCards = discountCards;
+    }
+
+    public Set<StampCard> getStampCards() {
+        return stampCards;
+    }
+
+    public void setStampCards(Set<StampCard> stampCards) {
+        this.stampCards = stampCards;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Business business = (Business) object;
+        return id == business.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

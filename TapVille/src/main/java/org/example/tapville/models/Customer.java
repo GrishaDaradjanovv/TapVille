@@ -28,8 +28,8 @@ public class Customer {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Card> cards;
+//    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<Card> cards;
 
     public Customer() {
     }
@@ -82,11 +82,11 @@ public class Customer {
         this.email = email;
     }
 
-    public Set<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
-    }
+//    public Set<Card> getCards() {
+//        return cards;
+//    }
+//
+//    public void setCards(Set<Card> cards) {
+//        this.cards = cards;
+//    }
 }

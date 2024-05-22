@@ -1,11 +1,24 @@
 package org.example.tapville.models;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("STAMP")
-public class StampCard extends Card {
+@DiscriminatorValue("Stamp")
+@Table(name = "stamp_cards")
+public class StampCard {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stamp_card_id")
+    long id;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "customer_id")
+    private Customer owner;
+    @ManyToOne
+    @JoinColumn(name = "creator_id", referencedColumnName = "business_id")
+    @JsonBackReference
+    private Business creator;
+    @Column(name = "stamps")
     private int stamps;
 
     public StampCard() {
@@ -13,6 +26,26 @@ public class StampCard extends Card {
 
     public int getStamps() {
         return stamps;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Customer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
+
+    public Business getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Business creator) {
+        this.creator = creator;
     }
 
     public void setStamps(int stamps) {
