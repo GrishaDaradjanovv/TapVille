@@ -2,22 +2,17 @@ package org.example.tapville.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jdk.jfr.Percentage;
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class DiscountCardDto {
-
-    private String cardName;
+    @Percentage
+    @NotNull
     private double discountPercentage;
 
     public DiscountCardDto() {
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
     }
 
     public double getDiscountPercentage() {
