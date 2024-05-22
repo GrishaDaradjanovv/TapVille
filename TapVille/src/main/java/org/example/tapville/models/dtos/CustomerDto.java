@@ -3,16 +3,18 @@ package org.example.tapville.models.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 
 public class CustomerDto {
-
+    @NotEmpty(message = "First name can't be empty")
     private String customerFirstName;
 
+    @NotEmpty(message = "Last name can't be empty")
     private String customerLastName;
-    @Size(min = 10, max = 10, message = "Invalid phone format")
+    @Size(min = 10, max = 10, message = "Invalid phone number")
     private String customerPhoneNumber;
     @Email(message = "Invalid E-mail format")
     private String customerEmail;
