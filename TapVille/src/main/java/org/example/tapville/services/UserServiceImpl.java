@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
-//        checkIfUsernameExist(user);
+        checkIfUsernameExist(user);
         user.setPassword(user.getPassword());
         user.setCreationDate(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
