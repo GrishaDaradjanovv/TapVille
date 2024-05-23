@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,6 +37,9 @@ public class Business {
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<StampCard> stampCards;
+
+    @Column(name = "creation_date")
+    private Timestamp creationDate;
 
     public Business() {
     }

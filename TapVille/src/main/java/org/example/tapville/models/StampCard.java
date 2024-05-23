@@ -3,6 +3,8 @@ package org.example.tapville.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @DiscriminatorValue("Stamp")
 @Table(name = "stamp_cards")
@@ -20,6 +22,8 @@ public class StampCard {
     private Business creator;
     @Column(name = "stamps")
     private int stamps;
+    @Column(name = "creation_date")
+    private Timestamp creationDate;
 
     public StampCard() {
     }

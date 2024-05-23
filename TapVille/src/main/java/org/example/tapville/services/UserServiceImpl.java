@@ -6,6 +6,7 @@ import org.example.tapville.models.User;
 import org.example.tapville.repositories.contracts.UserRepository;
 import org.example.tapville.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -15,10 +16,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -28,8 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
-        checkIfUsernameExist(user);
-        user.setPassword(user.getPassword());
+//        checkIfUsernameExist(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreationDate(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
     }
@@ -70,5 +73,8 @@ public class UserServiceImpl implements UserService {
         if (duplicateExists) {
             throw new UsernameDuplicateException("User", "username", user.getUsername());
         }
+    }
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

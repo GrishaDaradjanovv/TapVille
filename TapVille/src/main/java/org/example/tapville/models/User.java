@@ -23,8 +23,28 @@ public class User {
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
+    @Column(name = "is_admin")
+    boolean isAdmin;
+    @Column(name = "is_app_owner")
+    boolean isSuperAdmin;
 
     public User() {
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public boolean isSuperAdmin() {
+        return isSuperAdmin;
+    }
+
+    public void setSuperAdmin(boolean superAdmin) {
+        isSuperAdmin = superAdmin;
     }
 
     public long getId() {

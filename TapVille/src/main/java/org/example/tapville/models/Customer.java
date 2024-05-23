@@ -25,21 +25,12 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "is_admin")
-    private boolean isAdmin;
+
 
 //    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private Set<Card> cards;
 
     public Customer() {
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 
     public long getId() {
