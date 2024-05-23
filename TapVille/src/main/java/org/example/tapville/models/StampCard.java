@@ -10,7 +10,7 @@ public class StampCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stamp_card_id")
-    long id;
+    private long id;
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "customer_id")
     private Customer owner;
