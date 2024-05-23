@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -27,6 +28,8 @@ public class User {
     boolean isAdmin;
     @Column(name = "is_app_owner")
     boolean isSuperAdmin;
+    @OneToMany(mappedBy = "businessOwner")
+    private Set<Business>businesses;
 
     public User() {
     }

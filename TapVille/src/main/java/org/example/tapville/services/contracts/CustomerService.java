@@ -9,7 +9,4 @@ public interface CustomerService {
     Customer getCustomerById(Long id);
     Customer getCustomerByName(String name);
     List<Customer>getAll();
-    Customer promoteToAdmin(Customer customer,Customer admin);
-    Customer demote(Customer customer, Customer admin);
-
 }

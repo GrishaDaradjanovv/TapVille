@@ -10,6 +10,7 @@ import org.example.tapville.services.contracts.StampCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class StampCardServiceImpl implements StampCardService {
         }
         card.setCreator(creator);
         card.setOwner(owner);
+        card.setCreationDate(new Timestamp(System.currentTimeMillis()));
         return stampCardRepository.save(card);
     }
 

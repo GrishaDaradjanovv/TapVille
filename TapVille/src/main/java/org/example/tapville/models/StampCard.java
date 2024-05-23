@@ -28,6 +28,15 @@ public class StampCard {
     public StampCard() {
     }
 
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public int getStamps() {
         return stamps;
     }

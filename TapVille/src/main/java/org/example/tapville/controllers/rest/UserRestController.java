@@ -1,6 +1,7 @@
 package org.example.tapville.controllers.rest;
 
 import jakarta.validation.Valid;
+import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.exceptions.UsernameDuplicateException;
 import org.example.tapville.helpers.mappers.UserMapper;
 import org.example.tapville.models.User;
@@ -18,7 +19,7 @@ public class UserRestController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    public UserRestController(UserService userService,UserMapper userMapper) {
+    public UserRestController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
@@ -52,4 +53,29 @@ public class UserRestController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
+
+    @PutMapping("/{userId}/promote")
+    public void promoteToAdmin(@PathVariable long userId) {
+        try {
+            User user = userService.getById(8);
+            User userToPromote = userService.getById(userId);
+
+            userService.promoteToAdmin(userToPromote, user);
+        } catch (InvalidOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{userId}/demote")
+    public void demote(@PathVariable long userId) {
+        try {
+            User user = userService.getById(8);
+            User userToPromote = userService.getById(userId);
+
+            userService.demote(userToPromote, user);
+        } catch (InvalidOperationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
 }

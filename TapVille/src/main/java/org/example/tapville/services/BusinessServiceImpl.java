@@ -7,6 +7,7 @@ import org.example.tapville.services.contracts.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Business create(Business business) {
+        business.setBusinessCode(business.getBusinessCode());
+        business.setCreationDate(new Timestamp(System.currentTimeMillis()));
         return businessRepository.save(business);
     }
 

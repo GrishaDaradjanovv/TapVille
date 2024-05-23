@@ -40,8 +40,19 @@ public class Business {
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
+    @ManyToOne
+    @JoinColumn(name = "business_owner")
+    private User businessOwner;
 
     public Business() {
+    }
+
+    public Timestamp getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 
     public long getId() {

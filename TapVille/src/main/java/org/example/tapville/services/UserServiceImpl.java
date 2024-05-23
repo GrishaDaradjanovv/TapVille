@@ -1,6 +1,7 @@
 package org.example.tapville.services;
 
 import org.example.tapville.exceptions.EntityNotFoundException;
+import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.exceptions.UsernameDuplicateException;
 import org.example.tapville.models.User;
 import org.example.tapville.repositories.contracts.UserRepository;
@@ -59,6 +60,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUsername(username);
     }
 
+    @Override
+    public User promoteToAdmin(User user, User executor) {
+        checkIfUserIsSuperAdmin(executor);
+        User promotedUser = userRepository.findUserById(user.getId());
+        promotedUser.setAdmin(true);
+        update(promotedUser);
+        return promotedUser;
+    }
+
+    @Override
+    public User demote(User user, User executor) {
+        checkIfUserIsSuperAdmin(executor);
+        User demotedUser = userRepository.findUserById(user.getId());
+        demotedUser.setAdmin(false);
+        update(demotedUser);
+        return demotedUser;
+    }
+
     private void checkIfUsernameExist(User user) {
         boolean duplicateExists = true;
         try {
@@ -74,7 +93,13 @@ public class UserServiceImpl implements UserService {
             throw new UsernameDuplicateException("User", "username", user.getUsername());
         }
     }
+    //todo for auth helper class
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+    private void checkIfUserIsSuperAdmin(User user) {
+        if (!user.isSuperAdmin()) {
+            throw new InvalidOperationException("User is not an admin and cannot perform this operation!");
+        }
     }
 }

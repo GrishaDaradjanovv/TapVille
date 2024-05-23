@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User>getAll();
+    List<User> getAll();
 
     User getById(long id);
 
@@ -15,4 +15,8 @@ public interface UserService {
     void update(User user);
 
     User getByUsername(String username);
+
+    User promoteToAdmin(User user, User executor);
+
+    User demote(User user, User executor);
 }

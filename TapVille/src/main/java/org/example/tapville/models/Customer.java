@@ -1,7 +1,6 @@
 package org.example.tapville.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.TypeAlias;
 
 import java.util.Set;
 
@@ -25,12 +24,38 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
+    @ManyToMany
+    @JoinTable(
+            name = "customers_stamp_cards",
+            joinColumns = @JoinColumn(name = "customer"),
+            inverseJoinColumns = @JoinColumn(name = "stamp_card")
+    )
+    private Set<StampCard>stampCards;
 
-
-//    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private Set<Card> cards;
-
+    @ManyToMany
+    @JoinTable(
+            name = "customers_discount_cards",
+            joinColumns = @JoinColumn(name = "customer"),
+            inverseJoinColumns = @JoinColumn(name = "discount_card")
+    )
+    private Set<DiscountCard>discountCards;
     public Customer() {
+    }
+
+    public Set<StampCard> getStampCards() {
+        return stampCards;
+    }
+
+    public void setStampCards(Set<StampCard> stampCards) {
+        this.stampCards = stampCards;
+    }
+
+    public Set<DiscountCard> getDiscountCards() {
+        return discountCards;
+    }
+
+    public void setDiscountCards(Set<DiscountCard> discountCards) {
+        this.discountCards = discountCards;
     }
 
     public long getId() {
@@ -73,11 +98,4 @@ public class Customer {
         this.email = email;
     }
 
-//    public Set<Card> getCards() {
-//        return cards;
-//    }
-//
-//    public void setCards(Set<Card> cards) {
-//        this.cards = cards;
-//    }
 }

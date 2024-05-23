@@ -38,23 +38,4 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> getAll() {
         return customerRepository.getAll();
     }
-
-    @Override
-    public Customer promoteToAdmin(Customer customer, Customer admin) {
-        if (!admin.isAdmin()) {
-            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
-
-        }
-        customer.setAdmin(true);
-        return customerRepository.save(customer);
-    }
-
-    @Override
-    public Customer demote(Customer customer, Customer admin) {
-        if (!admin.isAdmin()) {
-            throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
-        }
-        customer.setAdmin(false);
-        return customerRepository.save(customer);
-    }
 }

@@ -10,6 +10,7 @@ import org.example.tapville.services.contracts.DiscountCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         card.setCreator(creator);
         card.setOwner(owner);
         card.setDiscount(percentage);
+        card.setCreationDate(new Timestamp(System.currentTimeMillis()));
         return discountCardRepository.save(card);
     }
 
