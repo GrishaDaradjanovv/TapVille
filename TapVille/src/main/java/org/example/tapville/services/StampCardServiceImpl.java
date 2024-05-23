@@ -16,6 +16,8 @@ import java.util.Optional;
 @Service
 public class StampCardServiceImpl implements StampCardService {
     private static final String CANNOT_PERFORM_OPERATION = "You can't perform this operation";
+    private static final int STAMP = 1;
+    private static final String NEGATIVE_STAMP_ERR_MSG = "Stamps are already '0'!";
     private final StampCardRepository stampCardRepository;
 
     @Autowired
@@ -32,6 +34,15 @@ public class StampCardServiceImpl implements StampCardService {
         card.setCreator(creator);
         card.setOwner(owner);
         return stampCardRepository.save(card);
+    }
+
+    @Override
+    public StampCard getById(Long id) {
+        StampCard card = stampCardRepository.getStampCardById(id);
+        if (card != null){
+            return card;
+        }
+        throw new EntityNotFoundException("Card","ID",String.valueOf(card.getId()));
     }
 
     @Override
@@ -56,13 +67,13 @@ public class StampCardServiceImpl implements StampCardService {
 
 
     @Override
-    public StampCard addStamp(StampCard stampCard, Business creator, int stamp) {
+    public StampCard addStamp(StampCard stampCard, Business creator) {
         checkCreator(creator, stampCard);
         StampCard card = stampCardRepository.getStampCardById(stampCard.getId());
         if (card != null) {
-            stampCard.setStamps(stampCard.getStamps() + stamp);
+            card.setStamps(stampCard.getStamps() + STAMP);
             update(card, creator);
-            return stampCard;
+            return card;
         } else {
             throw new EntityNotFoundException("Card", "ID", String.valueOf(stampCard.getId()));
 
@@ -70,13 +81,16 @@ public class StampCardServiceImpl implements StampCardService {
     }
 
     @Override
-    public StampCard removeStamp(StampCard stampCard, Business creator, int stamp) {
+    public StampCard removeStamp(StampCard stampCard, Business creator) {
         checkCreator(creator, stampCard);
         StampCard card = stampCardRepository.getStampCardById(stampCard.getId());
         if (card != null) {
-            stampCard.setStamps(stampCard.getStamps() - stamp);
+            if (stampCard.getStamps() <= 0){
+                throw new InvalidOperationException(NEGATIVE_STAMP_ERR_MSG);
+            }
+            card.setStamps(stampCard.getStamps() - STAMP);
             update(card, creator);
-            return stampCard;
+            return card;
         } else {
             throw new EntityNotFoundException("Card", "ID", String.valueOf(stampCard.getId()));
 

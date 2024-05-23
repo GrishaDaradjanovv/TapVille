@@ -3,6 +3,7 @@ package org.example.tapville.controllers.rest;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.example.tapville.exceptions.EntityNotFoundException;
+import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.helpers.mappers.DiscountCardMapper;
 import org.example.tapville.helpers.mappers.StampCardMapper;
 import org.example.tapville.models.Business;
@@ -30,7 +31,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cards")
 public class CardRestController {
-   private final StampCardService stampCardService;
+
+    private final StampCardService stampCardService;
     private final DiscountCardService discountCardService;
     private final BusinessService businessService;
     private final CustomerService customerService;
@@ -76,6 +78,30 @@ public class CardRestController {
             return discountCardMapper.discountCardToDto(discountCard);
         }catch (Exception e){
             throw new InputMismatchException("PROBLEM");
+        }
+    }
+
+    @PatchMapping("/stamp/add/{id}")
+    public void addStamp (@PathVariable long id){
+        Business creator = businessService.getById(1L);
+        try{
+            StampCard stampCard = stampCardService.getById(id);
+            stampCardService.addStamp(stampCard,creator);
+        }catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PatchMapping("/stamp/remove/{id}")
+    public void removeStamp(@PathVariable long id){
+        Business creator = businessService.getById(1L);
+        try {
+            StampCard stampCard = stampCardService.getById(id);
+            stampCardService.removeStamp(stampCard,creator);
+        }catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+        }catch (InvalidOperationException e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage());
         }
     }
 

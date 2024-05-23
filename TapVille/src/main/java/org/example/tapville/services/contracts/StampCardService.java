@@ -9,13 +9,15 @@ import java.util.List;
 public interface StampCardService {
     StampCard createStampCard(StampCard card, Business creator, Customer owner);
 
+    StampCard getById(Long id);
+
     List<StampCard>getAll();
 
     List<StampCard> getStampCardsByOwner(Customer owner);
 
-    StampCard addStamp(StampCard stampCard, Business creator, int stamp);
+    StampCard addStamp(StampCard stampCard, Business creator);
 
-    StampCard removeStamp(StampCard stampCard, Business creator, int stamp);
+    StampCard removeStamp(StampCard stampCard, Business creator);
 
     StampCard update(StampCard stampCard, Business creator);
 
