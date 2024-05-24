@@ -2,12 +2,21 @@ package org.example.tapville.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
 @Table(name = "Users")
 public class User {
 
@@ -29,7 +38,14 @@ public class User {
     @Column(name = "is_app_owner")
     boolean isSuperAdmin;
     @OneToMany(mappedBy = "businessOwner")
-    private Set<Business>businesses;
+    private Set<Business> businesses;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")})
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
