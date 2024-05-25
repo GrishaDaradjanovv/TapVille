@@ -1,4 +1,4 @@
-package org.example.tapville.helpers.mappers;
+package org.example.tapville.mappers;
 
 import org.example.tapville.models.Customer;
 import org.example.tapville.models.dtos.CustomerDto;

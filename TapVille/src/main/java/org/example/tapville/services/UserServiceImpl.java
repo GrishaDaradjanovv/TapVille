@@ -1,5 +1,6 @@
 package org.example.tapville.services;
 
+import org.example.tapville.exceptions.AuthorizationException;
 import org.example.tapville.exceptions.EntityNotFoundException;
 import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.exceptions.UsernameDuplicateException;
@@ -17,23 +18,26 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.getAll();
+    public List<User> getAll(User executor) {
+        if (executor.isSuperAdmin()){
+            return userRepository.getAll();
+        }
+        throw new AuthorizationException("User is not an admin and cannot perform this operation!");
+
     }
 
     @Override
     public void create(User user) {
 //        checkIfUsernameExist(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         user.setCreationDate(new Timestamp(System.currentTimeMillis()));
         userRepository.save(user);
     }
@@ -93,10 +97,10 @@ public class UserServiceImpl implements UserService {
             throw new UsernameDuplicateException("User", "username", user.getUsername());
         }
     }
-    //todo for auth helper class
-    public boolean checkPassword(String rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
-    }
+//    //todo for auth helper class
+//    public boolean checkPassword(String rawPassword, String encodedPassword) {
+//        return passwordEncoder.matches(rawPassword, encodedPassword);
+//    }
     private void checkIfUserIsSuperAdmin(User user) {
         if (!user.isSuperAdmin()) {
             throw new InvalidOperationException("User is not an admin and cannot perform this operation!");

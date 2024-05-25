@@ -1,9 +1,11 @@
 package org.example.tapville.controllers.rest;
 
 import jakarta.validation.Valid;
+import org.example.tapville.exceptions.AuthorizationException;
 import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.exceptions.UsernameDuplicateException;
-import org.example.tapville.helpers.mappers.UserMapper;
+import org.example.tapville.helpers.AuthenticationHelper;
+import org.example.tapville.mappers.UserMapper;
 import org.example.tapville.models.User;
 import org.example.tapville.models.dtos.UserDto;
 import org.example.tapville.services.contracts.UserService;
@@ -18,15 +20,22 @@ import java.util.List;
 public class UserRestController {
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthenticationHelper authenticationHelper;
 
-    public UserRestController(UserService userService, UserMapper userMapper) {
+    public UserRestController(UserService userService, UserMapper userMapper, AuthenticationHelper authenticationHelper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @GetMapping
-    public List<User> getAll() {
-        return userService.getAll();
+    public List<User> getAll(@RequestHeader(name = "Authorization") String header) {
+        try{
+            User user = authenticationHelper.tryGetUser(header);
+            return userService.getAll(user);
+        }catch (AuthorizationException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

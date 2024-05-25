@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> getAll();
+    List<User> getAll(User executor);
 
     User getById(long id);
 

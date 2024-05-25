@@ -2,7 +2,7 @@ package org.example.tapville.controllers.rest;
 
 import jakarta.validation.Valid;
 import org.example.tapville.exceptions.EntityNotFoundException;
-import org.example.tapville.helpers.mappers.BusinessMapper;
+import org.example.tapville.mappers.BusinessMapper;
 import org.example.tapville.models.Business;
 import org.example.tapville.models.dtos.BusinessDto;
 import org.example.tapville.services.contracts.BusinessService;

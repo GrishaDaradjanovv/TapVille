@@ -1,7 +1,7 @@
 package org.example.tapville.controllers.rest;
 
 import jakarta.validation.Valid;
-import org.example.tapville.helpers.mappers.CustomerMapper;
+import org.example.tapville.mappers.CustomerMapper;
 import org.example.tapville.models.Customer;
 import org.example.tapville.models.dtos.CustomerDto;
 import org.example.tapville.services.contracts.CustomerService;
