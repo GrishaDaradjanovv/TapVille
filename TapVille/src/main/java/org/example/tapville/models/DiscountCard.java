@@ -24,6 +24,9 @@ public class DiscountCard {
     private Business creator;
     @Column(name = "creation_date")
     private Timestamp creationDate;
+    @Column(name = "qr_code_path")
+    private String path;
+
 
     public DiscountCard() {
     }
@@ -62,5 +65,13 @@ public class DiscountCard {
 
     public void setCreator(Business creator) {
         this.creator = creator;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

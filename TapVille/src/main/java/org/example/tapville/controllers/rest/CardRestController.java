@@ -92,8 +92,12 @@ public class CardRestController {
             DiscountCard discountCard = discountCardMapper.createDiscountCard(discountCardDto, creator, owner);
             discountCardService.createDiscountCard(discountCard, discountCardDto.getDiscountPercentage(), creator, owner);
             return discountCardMapper.discountCardToDto(discountCard);
+        } catch (WriterException e) {
+            throw new InputMismatchException(e.getMessage());
+        } catch (IOException e) {
+            throw new InputMismatchException(e.getMessage());
         } catch (Exception e) {
-            throw new InputMismatchException("PROBLEM");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
@@ -125,6 +129,20 @@ public class CardRestController {
     public ResponseEntity<Resource> getStampCardQrCode(@PathVariable Long id) {
         StampCard stampCard = stampCardService.getById(id);
         Path qrCodePath = Paths.get(stampCard.getPath());
+        Resource qrCodeImage;
+        try {
+            qrCodeImage = new UrlResource(qrCodePath.toUri());
+        } catch (MalformedURLException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "QR code not found");
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(qrCodeImage);
+    }
+    @GetMapping("/discount/qr/{id}")
+    public ResponseEntity<Resource> getDiscountCardQrCode(@PathVariable Long id) {
+        DiscountCard discountCard = discountCardService.getById(id);
+        Path qrCodePath = Paths.get(discountCard.getPath());
         Resource qrCodeImage;
         try {
             qrCodeImage = new UrlResource(qrCodePath.toUri());

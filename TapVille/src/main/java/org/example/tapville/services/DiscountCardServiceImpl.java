@@ -1,15 +1,18 @@
 package org.example.tapville.services;
 
+import com.google.zxing.WriterException;
 import org.example.tapville.exceptions.EntityNotFoundException;
 import org.example.tapville.exceptions.InvalidOperationException;
 import org.example.tapville.models.Business;
 import org.example.tapville.models.Customer;
 import org.example.tapville.models.DiscountCard;
+import org.example.tapville.models.StampCard;
 import org.example.tapville.repositories.contracts.DiscountCardRepository;
 import org.example.tapville.services.contracts.DiscountCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -20,13 +23,16 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     private final DiscountCardRepository discountCardRepository;
 
+    private final QrCode qrCode;
+
     @Autowired
-    public DiscountCardServiceImpl(DiscountCardRepository discountCardRepository) {
+    public DiscountCardServiceImpl(DiscountCardRepository discountCardRepository, QrCode qrCode) {
         this.discountCardRepository = discountCardRepository;
+        this.qrCode = qrCode;
     }
 
     @Override
-    public DiscountCard createDiscountCard(DiscountCard card, double percentage, Business creator, Customer owner) {
+    public void createDiscountCard(DiscountCard card, double percentage, Business creator, Customer owner) throws IOException, WriterException {
         if (creator == null && owner == null) {
             throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
         }
@@ -34,7 +40,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         card.setOwner(owner);
         card.setDiscount(percentage);
         card.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        return discountCardRepository.save(card);
+        DiscountCard savedCard = discountCardRepository.save(card);
+        qrCode.GenerateQrDiscount(savedCard,discountCardRepository);
     }
 
     @Override
@@ -69,6 +76,15 @@ public class DiscountCardServiceImpl implements DiscountCardService {
             throw new EntityNotFoundException("Card", "ID", String.valueOf(card.getId()));
 
         }
+    }
+
+    @Override
+    public DiscountCard getById(Long id) {
+        DiscountCard card = discountCardRepository.getDiscountCardById(id);
+        if (card != null){
+            return card;
+        }
+        throw new EntityNotFoundException("Card","ID",String.valueOf(card.getId()));
     }
 
     private boolean checkCreator(Business creator, DiscountCard card) {

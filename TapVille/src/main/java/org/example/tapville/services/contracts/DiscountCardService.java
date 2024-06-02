@@ -1,13 +1,15 @@
 package org.example.tapville.services.contracts;
 
+import com.google.zxing.WriterException;
 import org.example.tapville.models.Business;
 import org.example.tapville.models.Customer;
 import org.example.tapville.models.DiscountCard;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DiscountCardService {
-    DiscountCard createDiscountCard(DiscountCard card, double percentage, Business creator, Customer owner);
+    void createDiscountCard(DiscountCard card, double percentage, Business creator, Customer owner) throws IOException, WriterException;
 
     List<DiscountCard> getDiscountCardsByOwner(Customer owner);
 
@@ -16,5 +18,5 @@ public interface DiscountCardService {
     DiscountCard update(DiscountCard discountCard, Business creator);
 
     DiscountCard changeDiscount(DiscountCard card, Business creator, double percentage);
-
+    DiscountCard getById(Long id);
 }
