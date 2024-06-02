@@ -2,6 +2,7 @@ package org.example.tapville.services;
 
 import org.example.tapville.exceptions.EntityNotFoundException;
 import org.example.tapville.exceptions.InvalidOperationException;
+
 import org.example.tapville.models.Business;
 import org.example.tapville.models.Customer;
 import org.example.tapville.models.StampCard;
@@ -20,22 +21,26 @@ public class StampCardServiceImpl implements StampCardService {
     private static final int STAMP = 1;
     private static final String NEGATIVE_STAMP_ERR_MSG = "Stamps are already '0'!";
     private final StampCardRepository stampCardRepository;
+    private final QrCode qrCode;
+
 
     @Autowired
-    public StampCardServiceImpl(StampCardRepository stampCardRepository) {
+    public StampCardServiceImpl(StampCardRepository stampCardRepository, QrCode qrCode) {
         this.stampCardRepository = stampCardRepository;
+        this.qrCode = qrCode;
     }
 
 
     @Override
-    public StampCard createStampCard(StampCard card, Business creator, Customer owner) {
+    public void createStampCard(StampCard card, Business creator, Customer owner) throws Exception {
         if (creator == null && owner == null) {
             throw new InvalidOperationException(CANNOT_PERFORM_OPERATION);
         }
         card.setCreator(creator);
         card.setOwner(owner);
         card.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        return stampCardRepository.save(card);
+        StampCard savedCard = stampCardRepository.save(card);
+        qrCode.GenerateQrStamp(savedCard,stampCardRepository);
     }
 
     @Override
@@ -59,7 +64,7 @@ public class StampCardServiceImpl implements StampCardService {
 
     @Override
     public StampCard update(StampCard card, Business creator) {
-        Optional<StampCard> cardOptional = stampCardRepository.findById(card.getId());
+        Optional<StampCard> cardOptional = Optional.ofNullable(stampCardRepository.getStampCardById(card.getId()));
         if (cardOptional.isPresent()) {
             return stampCardRepository.save(card);
         } else {

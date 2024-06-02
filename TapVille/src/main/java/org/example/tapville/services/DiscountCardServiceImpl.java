@@ -39,7 +39,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCard update(DiscountCard card, Business creator) {
-        Optional<DiscountCard> cardOptional = discountCardRepository.findById(card.getId());
+        Optional<DiscountCard> cardOptional = Optional.ofNullable(discountCardRepository.getDiscountCardById(card.getId()));
         if (cardOptional.isPresent()) {
             return discountCardRepository.save(card);
         } else {

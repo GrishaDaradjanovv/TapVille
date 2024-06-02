@@ -12,7 +12,7 @@ public class DiscountCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discount_card_id")
-    long id;
+    private Long id;
     @Column(name = "discount_percentage")
     private double discount;
     @ManyToOne
@@ -28,7 +28,7 @@ public class DiscountCard {
     public DiscountCard() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

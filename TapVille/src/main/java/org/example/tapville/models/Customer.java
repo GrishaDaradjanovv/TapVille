@@ -24,7 +24,7 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customers_stamp_cards",
             joinColumns = @JoinColumn(name = "customer"),
@@ -32,7 +32,7 @@ public class Customer {
     )
     private Set<StampCard>stampCards;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customers_discount_cards",
             joinColumns = @JoinColumn(name = "customer"),

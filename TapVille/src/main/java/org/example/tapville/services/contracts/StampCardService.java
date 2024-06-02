@@ -7,7 +7,7 @@ import org.example.tapville.models.StampCard;
 import java.util.List;
 
 public interface StampCardService {
-    StampCard createStampCard(StampCard card, Business creator, Customer owner);
+    void createStampCard(StampCard card, Business creator, Customer owner) throws Exception;
 
     StampCard getById(Long id);
 

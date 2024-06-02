@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class StampCardDto {
 
     private int numberOfStamps;
+    private String qrCodePath;
 
     public StampCardDto() {
     }
@@ -16,5 +17,13 @@ public class StampCardDto {
 
     public void setNumberOfStamps(int numberOfStamps) {
         this.numberOfStamps = numberOfStamps;
+    }
+
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
     }
 }
