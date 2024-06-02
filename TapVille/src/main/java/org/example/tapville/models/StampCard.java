@@ -28,10 +28,6 @@ public class StampCard{
     @Column(name = "qr_code_path")
     private String path;
 
-    @Lob
-    @Column(name = "qr_code_img")
-    private byte [] qrCodeImage;
-
 
     public StampCard() {
     }
@@ -79,13 +75,5 @@ public class StampCard{
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public byte[] getQrCodeImage() {
-        return qrCodeImage;
-    }
-
-    public void setQrCodeImage(byte[] qrCodeImage) {
-        this.qrCodeImage = qrCodeImage;
     }
 }
